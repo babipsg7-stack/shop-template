@@ -64,3 +64,33 @@ footer {
   background: var(--color-surface);
   font-size: 0.9rem;
 }
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.card {
+  background: var(--color-surface);
+  border-radius: var(--radius);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.card h3 {
+  margin: 0;
+}
+
+.card p {
+  margin: 0;
+  flex: 1;
+}
+
+.card-category {
+  font-size: 0.8rem;
+  color: var(--color-accent);
+  text-transform: uppercase;
+}
