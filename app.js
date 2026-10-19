@@ -1,5 +1,8 @@
 const productList = document.getElementById("product-list");
 const searchInput = document.getElementById("search");
+const filtersBox = document.getElementById("filters");
+
+let activeCategory = "All";
 
 function formatPrice(value) {
   return "$" + value.toFixed(2);
@@ -37,15 +40,40 @@ function renderProducts(items) {
   });
 }
 
-searchInput.addEventListener("input", function () {
+function applyFilters() {
   const query = searchInput.value.trim().toLowerCase();
   const filtered = PRODUCTS.filter(function (p) {
-    return (
+    const matchesCategory =
+      activeCategory === "All" || p.category === activeCategory;
+    const matchesQuery =
       p.name.toLowerCase().includes(query) ||
-      p.category.toLowerCase().includes(query)
-    );
+      p.category.toLowerCase().includes(query);
+    return matchesCategory && matchesQuery;
   });
   renderProducts(filtered);
-});
+}
 
-renderProducts(PRODUCTS);
+function renderFilters() {
+  const categories = ["All"].concat(
+    Array.from(new Set(PRODUCTS.map(function (p) { return p.category; })))
+  );
+
+  filtersBox.innerHTML = "";
+  categories.forEach(function (name) {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "filter-btn" + (name === activeCategory ? " active" : "");
+    btn.textContent = name;
+    btn.addEventListener("click", function () {
+      activeCategory = name;
+      renderFilters();
+      applyFilters();
+    });
+    filtersBox.appendChild(btn);
+  });
+}
+
+searchInput.addEventListener("input", applyFilters);
+
+renderFilters();
+applyFilters();
